@@ -20,12 +20,12 @@ module.exports = (io) => {
 
     socket.on('chat message', async (msg) => {
       try {
+        const savedMessage = await sendMessage(msg);
         const receiverSocketId = socketToIdMap.get(msg.receiver);
         if (receiverSocketId) {
           io.to(receiverSocketId).emit('chat message', savedMessage);
         }
         socket.emit('message sent', savedMessage);
-        const savedMessage = await sendMessage(msg);
       } catch (error) {
         socket.emit('message error', { error: 'Failed to send message' });
       }
