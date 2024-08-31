@@ -4,6 +4,7 @@ import StoryUploadModal from "./StoryUploadModal";
 import StoryViewer from "./StoryViewer";
 import { useCurrentUserContext } from "@/context/UserContext";
 import { useGetUsers } from "@/lib/react-query/queriesAndMutation";
+import Loader from "../shared/loader";
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 const StoryBar = () => {
@@ -20,7 +21,6 @@ const StoryBar = () => {
       setCurrentUserStory(true)
     }
   }, [])
-  
 
   const storiesUsers = useMemo(() => {
     if (isLoading || !users) return [];
@@ -63,6 +63,12 @@ const StoryBar = () => {
   const handleAddStory = () => {
     setIsModalOpen(true);
   };
+
+  if(!currentUser) {
+    refetchCurrentUser();
+    return <Loader/>
+  }
+  
 
   return (
     <div className="w-full overflow-x-auto">

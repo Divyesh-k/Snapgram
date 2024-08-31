@@ -900,3 +900,41 @@ export const fetchMessages = async (userId: string, otherUserId: string) => {
   }
   return response.json();
 };
+
+
+export async function getCommentsByPost(postId: string) {
+  try {
+    const response = await fetch(`${apiUrl}/comments/${postId}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch comments");
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    throw error;
+  }
+}
+
+export async function createComment(comment: { post_id: string; content: string , author : string, parent_id : string}) {
+  const token = getJWTToken();
+  try {
+    const response = await fetch(`${apiUrl}/comments/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(comment),
+    });
+
+    if (!response.ok) {
+      return new Error("Failed to create comment");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error creating comment:", error);
+    throw error;
+  }
+}

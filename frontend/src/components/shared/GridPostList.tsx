@@ -23,18 +23,17 @@ const GridPostList = ({
   const { user } = useUserContext();
   const [loadedImages, setLoadedImages] = useState<{ [key: string]: boolean }>({});
 
-  const breakpointColumnsObj = useMemo(() => ({
-    default: posts.length > 3 ? 4 : posts.length,
-    1100: posts.length > 2 ? 3 : posts.length,
-    700: posts.length > 1 ? 2 : 1,
+  const breakpointColumnsObj = {
+    default: 4,
+    1100: 3,
+    700: 2,
     500: 1
-  }), [posts.length]);
+  };
 
   const handleImageLoad = (postId: string) => {
     setLoadedImages(prev => ({ ...prev, [postId]: true }));
   };
 
-  console.log("posts", posts);
 
   return (
     <div className={`grid-container ${posts.length === 1 ? 'single-image' : ''}`}>

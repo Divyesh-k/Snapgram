@@ -108,7 +108,7 @@ const StoryViewer = ({ users, initialUserIndex, onClose }) => {
 
                 {/* User info */}
                 <div className="absolute top-4 left-4 flex items-center z-20">
-                    <img src={currentUser.profilePicture} alt={currentUser.username} className="w-8 h-8 rounded-full mr-2" />
+                    <img src={`${import.meta.env.VITE_API_URL}/uploads/${currentUser.profilePicture}`} alt={currentUser.username} className="w-8 h-8 rounded-full mr-2" />
                     <span className="text-white font-semibold">{currentUser.username}</span>
                 </div>
 
@@ -122,9 +122,9 @@ const StoryViewer = ({ users, initialUserIndex, onClose }) => {
                 {/* Story content */}
                 <div className="absolute inset-0 flex items-center justify-center">
                     {currentStories[currentStoryIndex]?.mediaType !== "video" ? (
-                        <img src={currentStories[currentStoryIndex]?.mediaUrl} alt="Story" className="w-full h-full object-cover" />
+                        <img src={`${import.meta.env.VITE_API_URL}/uploads/${currentStories[currentStoryIndex]?.mediaUrl}`} alt="Story" className="w-full h-full object-cover" />
                     ) : (
-                        <video src={currentStories[currentStoryIndex]?.mediaUrl} className="w-full h-full object-cover" autoPlay loop muted />
+                        <video src={`${import.meta.env.VITE_API_URL}/uploads/${currentStories[currentStoryIndex]?.mediaUrl}`} className="w-full h-full object-cover" autoPlay loop muted />
                     )}
                 </div>
 

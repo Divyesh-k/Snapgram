@@ -11,6 +11,7 @@ const saveRoutes = require("./saveRoutes");
 const followRoutes = require("./followRoute");
 const storyRoutes = require("./storyRoutes");
 const chatRoutes = require("./chatRoutes");
+const commentRoutes = require("./commentRoutes");
 
 // Use route handlers
 router.use('/auth', authRoutes);
@@ -21,5 +22,6 @@ router.use('/save', saveRoutes);
 router.use('/follow', followRoutes);
 router.use('/stories', storyRoutes);
 router.use('/chat', chatRoutes);
+router.use('/comments', commentRoutes);
 
 module.exports = router;

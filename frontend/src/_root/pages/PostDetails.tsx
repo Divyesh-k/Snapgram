@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import GridPostList from "@/components/shared/GridPostList";
 import PostStats from "@/components/shared/PostStats";
 import Loader from "@/components/shared/loader";
@@ -8,6 +9,7 @@ import {
   useDeletePost,
   useDeleteSavedPost,
   useGetPostById,
+  useGetCommentsByPost,
 } from "@/lib/react-query/queriesAndMutation";
 import { multiFormatDateString } from "@/lib/utils";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -17,6 +19,10 @@ const PostDetails = () => {
   const { user } = useUserContext();
   const { currentUser } = useCurrentUserContext();
   const { data: post, isLoading } = useGetPostById(id || "");
+  const { data: comments, isLoading: isLoadingComments } = useGetCommentsByPost(
+    post?._id || ""
+  );
+
   const { mutate: deletePost, isPending: isdeletePostLoading } =
     useDeletePost();
 
@@ -26,17 +32,13 @@ const PostDetails = () => {
   const navigate = useNavigate();
 
   // Filter user's posts to create suggested posts
-  
   const suggestedPosts =
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     currentUser?.posts?.filter((userPost) => userPost._id !== id) || [];
 
   const handleDeletePost = () => {
     deletePost({ postId: post?._id ?? "", imageId: post?.imageId ?? "" });
     if (post != undefined) {
       if (post?.save) {
-        // eslint-disable-next-line no-unsafe-optional-chaining
         for (const save of post?.save) {
           deleteSavedPost(save._id);
         }
@@ -85,8 +87,9 @@ const PostDetails = () => {
               >
                 <img
                   src={
-                    `${import.meta.env.VITE_API_URL}/uploads/${post?.creator.profilePicture}` ||
-                    "/assets/icons/profile-placeholder.svg"
+                    `${import.meta.env.VITE_API_URL}/uploads/${
+                      post?.creator.profilePicture
+                    }` || "/assets/icons/profile-placeholder.svg"
                   }
                   alt="creator"
                   className="w-8 h-8 lg:w-12 lg:h-12 rounded-full"
@@ -126,7 +129,7 @@ const PostDetails = () => {
                   <Button
                     onClick={handleDeletePost}
                     variant="ghost"
-                    className={`ost_details-delete_btn ${
+                    className={`post_details-delete_btn ${
                       user.id !== post?.creator._id && "hidden"
                     }`}
                   >
@@ -141,24 +144,59 @@ const PostDetails = () => {
               </div>
             </div>
 
-            <hr className="border w-full border-dark-4/80" />
-
-            <div className="flex flex-col flex-1 w-full small-medium lg:base-regular">
-              <p>{post?.caption}</p>
-              <ul className="flex gap-1 mt-2">
+            <div className="flex flex-1 w-full small-medium lg:base-regular">
+              <span>{post?.caption}</span>
+              <ul className="flex ml-2 small-medium lg:base-regular">
                 {post?.tags.map((tag: string, index: string) => (
-                  <li
-                    key={`${tag}${index}`}
-                    className="text-light-3 small-regular"
-                  >
+                  <li key={`${tag}${index}`} className="text-light-3">
                     #{tag}
                   </li>
                 ))}
               </ul>
             </div>
 
+            <hr className="border w-full border-dark-4/80" />
+
+            {/* Comments Section */}
+            <div className="mt-4">
+              {/* <h3 className="text-xl font-semibold">Comments</h3> */}
+              {isLoadingComments ? (
+                <Loader />
+              ) : (
+                <div className="comments-list">
+                  {comments &&
+                    comments.map((comment) => (
+                      <div key={comment._id} className="comment-item mb-4">
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={
+                              `${import.meta.env.VITE_API_URL}/uploads/${
+                                comment.author.profilePicture
+                              }` || "/assets/icons/profile-placeholder.svg"
+                            }
+                            alt="author"
+                            className="w-8 h-8 rounded-full"
+                          />
+                          <div>
+                            <span className="base-medium text-light-3">
+                              {comment.author.username}
+                            </span>
+                            <span className="ml-3 text-light-1">
+                              {comment.content}
+                            </span>
+                          </div>
+                        </div>
+                        <p className="text-light-1 small-regular">
+                          {multiFormatDateString(comment.created_at)}
+                        </p>
+                      </div>
+                    ))}
+                </div>
+              )}
+            </div>
+
             <div className="w-full">
-              <PostStats post={post} userId={user.id} />
+              <PostStats post={post} userId={user.id} comment={true} />
             </div>
           </div>
         </div>
@@ -166,7 +204,10 @@ const PostDetails = () => {
 
       <div className="max-w-5xl w-full mt-8">
         <h2 className="text-2xl font-bold mb-4">
-          More from <span className="text-primary-500"> {currentUser?.username.toLocaleUpperCase()}</span>
+          More from{" "}
+          <span className="text-primary-500">
+            {currentUser?.username.toLocaleUpperCase()}
+          </span>
         </h2>
         {suggestedPosts.length > 0 ? (
           <GridPostList posts={suggestedPosts} />

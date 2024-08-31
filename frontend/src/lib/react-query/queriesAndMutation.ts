@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import {
   addFollow,
+  createComment,
   createPost,
   createUserAccount,
   deleteFollow,
@@ -15,6 +16,7 @@ import {
   deleteUpload,
   fetchMessages,
   getAllActiveStories,
+  getCommentsByPost,
   getCurrentUser,
   // getInfinitePosts,
   getPostById,
@@ -31,7 +33,7 @@ import {
   updateUser,
   upload,
 } from "../services/api";
-import { INewPost, INewUser, IUpdatePost} from "@/types";
+import { INewPost, INewUser, IUpdatePost } from "@/types";
 import { QUERY_KEYS } from "./queykeys";
 // import { QUERY_KEYS } from "./queykeys"
 
@@ -328,11 +330,28 @@ export const useGetActiveStories = () => {
 
 //chat queries
 
-export const useGetChatMessages = (currentUserId: string, otherUserId: string) => {
+export const useGetChatMessages = (
+  currentUserId: string,
+  otherUserId: string
+) => {
   return useQuery({
-    queryKey: ["chatMessages" , currentUserId , otherUserId],
-    queryFn: () =>
-      fetchMessages(currentUserId, otherUserId),
+    queryKey: ["chatMessages", currentUserId, otherUserId],
+    queryFn: () => fetchMessages(currentUserId, otherUserId),
     enabled: !!currentUserId && !!otherUserId,
   });
 };
+
+export const useGetCommentsByPost = (postId: string) => {
+  return useQuery({
+    queryKey: ["comments", postId],
+    queryFn: () => getCommentsByPost(postId),
+  });
+};
+
+
+export const useCreateComment = () => {
+  return useMutation({
+    mutationFn: ({ post_id, content , author , parent_id }: { post_id: string; content: string , author : string , parent_id : string}) =>
+      createComment({post_id, content , author , parent_id}),
+  });
+}
