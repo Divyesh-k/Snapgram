@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import StoryBar from "@/components/Story/StoryBar";
 import PostCard from "@/components/shared/PostCard";
 import UserCard from "@/components/shared/UserCard";
@@ -13,13 +14,32 @@ function Home() {
   const { data: creators, isLoading: isUserLoading } = useGetUsers(10);
   const { currentUser: user } = useCurrentUserContext();
 
+  const scrollbarStyles = {
+    scrollbarWidth: "thin",
+    scrollbarColor: "#5c5c7b #09090a",
+    "&::-webkit-scrollbar": {
+      width: "3px",
+    },
+    "&::-webkit-scrollbar-track": {
+      background: "#09090a",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#5c5c7b",
+      borderRadius: "50px",
+    },
+    "&::-webkit-scrollbar-thumb:hover": {
+      background: "#7878a3",
+    },
+  };
+
   if(isUserLoading && !user) {
     return <Loader />;
   }
 
   return (
     <div className="flex flex-1">
-      <div className="home-container">
+      {/* @ts-ignore */}
+      <div className="home-container" style={scrollbarStyles}>
         <div className="m-1">
           <StoryBar />
         </div>
@@ -31,7 +51,7 @@ function Home() {
             <ul className="flex flex-col flex-1 gap-9 w-full">
               {posts?.map(
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+                // @ts-expect-error
                 (post) => (
                 <PostCard post={post} key={post._id} />
               ))}
@@ -48,7 +68,7 @@ function Home() {
           <ul className="grid 2xl:grid-cols-2 gap-6">
             {creators?.map(
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+              // @ts-expect-error
               (creator) =>
                 creator.username !== user?.username && (
                   <li key={creator?._id}>

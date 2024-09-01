@@ -31,8 +31,7 @@ const PostStats = ({ post, userId, comment = false }: PostStatsProps) => {
     useDeleteSavedPost();
   const { data: currentUser, isLoading: isLoadingUser } = useGetCurrentUser();
 
-  const { mutateAsync: addComment, isSuccess: successComment } =
-    useCreateComment();
+  const { mutateAsync: addComment } = useCreateComment();
   const { data: comments, refetch: commentRefetch } = useGetCommentsByPost(
     post?._id || ""
   );
