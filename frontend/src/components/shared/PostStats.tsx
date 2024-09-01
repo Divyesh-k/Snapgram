@@ -10,7 +10,6 @@ import { checkIsLiked } from "@/lib/utils";
 import { Models } from "appwrite";
 import Loader from "@/components/shared/loader";
 import React, { useEffect, useState } from "react";
-import { unknown } from "zod";
 
 type PostStatsProps = {
   post: Models.Document;
@@ -32,10 +31,15 @@ const PostStats = ({ post, userId, comment = false }: PostStatsProps) => {
     useDeleteSavedPost();
   const { data: currentUser, isLoading: isLoadingUser } = useGetCurrentUser();
 
-  const { mutateAsync: addComment , isSuccess : successComment} = useCreateComment();
-  const { data : comments} = useGetCommentsByPost(post?._id || ""); 
-  console.log("Comments:",comments);
-  const [totalComments, setTotalComments] = useState<number>(comments?.length || 0);
+  const { mutateAsync: addComment, isSuccess: successComment } =
+    useCreateComment();
+  const { data: comments, refetch: commentRefetch } = useGetCommentsByPost(
+    post?._id || ""
+  );
+  console.log("Comments:", comments);
+  const [totalComments, setTotalComments] = useState<number>(
+    comments?.length || 0
+  );
 
   useEffect(() => {
     if (currentUser && post) {
@@ -48,17 +52,15 @@ const PostStats = ({ post, userId, comment = false }: PostStatsProps) => {
       }
       setSavedPostRecord(savedPost);
       setIsSaved(!!savedPost);
+
+      commentRefetch();
+      setTotalComments(comments?.length || 0);
     }
   }, [currentUser, post]);
 
   useEffect(() => {
-    if(successComment){
-      console.log("Comment added successfully")
-    }
-    if(successComment){ 
-      setTotalComments(totalComments + 1);
-    }
-  },[successComment])
+    setTotalComments(comments?.length || 0);
+  }, [comments]);
 
   const handleLikePost = (
     e: React.MouseEvent<HTMLImageElement, MouseEvent>
@@ -88,11 +90,32 @@ const PostStats = ({ post, userId, comment = false }: PostStatsProps) => {
     }
   };
 
-  const handleCommentSubmit = () => {
+  const handleCommentSubmit = async () => {
     console.log("Submitting comment:", commentText);
-    setCommentText(""); // Clear the comment input after submission
-    addComment({ post_id: post._id, content: commentText , author : currentUser._id , parent_id : post._id});
-    console.log("Comment added successfully");
+
+    // Optimistically update the totalComments count
+    setTotalComments((prevCount) => prevCount + 1);
+
+    try {
+      await addComment({
+        post_id: post._id,
+        content: commentText,
+        author: currentUser._id,
+        parent_id: post._id,
+      });
+
+      // Clear the comment input after submission
+      setCommentText("");
+
+      // Refetch comments to ensure consistency
+      commentRefetch();
+      console.log("Comment added successfully");
+    } catch (error) {
+      console.error("Error adding comment:", error);
+
+      // Revert the optimistic update in case of an error
+      setTotalComments((prevCount) => prevCount - 1);
+    }
   };
 
   if (isLoadingUser) {

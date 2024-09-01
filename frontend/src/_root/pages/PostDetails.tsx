@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef } from "react";
 import GridPostList from "@/components/shared/GridPostList";
 import PostStats from "@/components/shared/PostStats";
 import Loader from "@/components/shared/loader";
@@ -14,22 +14,47 @@ import {
 import { multiFormatDateString } from "@/lib/utils";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
+const scrollbarStyles = {
+  scrollbarWidth: "thin",
+  scrollbarColor: "#5c5c7b #09090a",
+  "&::-webkit-scrollbar": {
+    width: "3px",
+  },
+  "&::-webkit-scrollbar-track": {
+    background: "#09090a",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "#5c5c7b",
+    borderRadius: "50px",
+  },
+  "&::-webkit-scrollbar-thumb:hover": {
+    background: "#7878a3",
+  },
+};
+
 const PostDetails = () => {
   const { id } = useParams();
   const { user } = useUserContext();
   const { currentUser } = useCurrentUserContext();
   const { data: post, isLoading } = useGetPostById(id || "");
-  const { data: comments, isLoading: isLoadingComments } = useGetCommentsByPost(
+  const { data: comments, isLoading: isLoadingComments, refetch } = useGetCommentsByPost(
     post?._id || ""
   );
 
-  const { mutate: deletePost, isPending: isdeletePostLoading } =
-    useDeletePost();
+  const { mutate: deletePost, isPending: isdeletePostLoading } = useDeletePost();
 
   const { mutate: deleteSavedPost, isPending: isdeleteSavedPostLoading } =
     useDeleteSavedPost();
 
   const navigate = useNavigate();
+  const commentSectionRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to the bottom of the comment section when a new comment is added
+  useEffect(() => {
+    if (commentSectionRef.current) {
+      commentSectionRef.current.scrollTop = commentSectionRef.current.scrollHeight;
+    }
+  }, [comments]);
 
   // Filter user's posts to create suggested posts
   const suggestedPosts =
@@ -92,18 +117,18 @@ const PostDetails = () => {
                     }` || "/assets/icons/profile-placeholder.svg"
                   }
                   alt="creator"
-                  className="w-8 h-8 lg:w-12 lg:h-12 rounded-full"
+                  className="w-8 h-8 lg:w-12 lg:h-12 rounded-full object-cover"
                 />
                 <div className="flex gap-1 flex-col">
                   <p className="base-medium lg:body-bold text-light-1">
-                    {post?.creator.name}
+                    {post?.creator.username}
                   </p>
                   <div className="flex-center gap-2 text-light-3">
-                    <p className="subtle-semibold lg:small-regular ">
+                    <p className="subtle-semibold lg:base-regular">
                       {multiFormatDateString(post?.$createdAt)}
                     </p>
                     •
-                    <p className="subtle-semibold lg:small-regular">
+                    <p className="subtle-semibold lg:base-regular">
                       {post?.location}
                     </p>
                   </div>
@@ -158,12 +183,15 @@ const PostDetails = () => {
             <hr className="border w-full border-dark-4/80" />
 
             {/* Comments Section */}
-            <div className="mt-4">
-              {/* <h3 className="text-xl font-semibold">Comments</h3> */}
+            <div
+              className="mt-4 overflow-y-scroll h-72"
+              style={scrollbarStyles}
+              ref={commentSectionRef}
+            >
               {isLoadingComments ? (
                 <Loader />
               ) : (
-                <div className="comments-list">
+                <div className={`comments-list ${comments ? '' : 'h-56 w-10/12'} `}>
                   {comments &&
                     comments.map((comment) => (
                       <div key={comment._id} className="comment-item mb-4">
@@ -175,7 +203,7 @@ const PostDetails = () => {
                               }` || "/assets/icons/profile-placeholder.svg"
                             }
                             alt="author"
-                            className="w-8 h-8 rounded-full"
+                            className="w-8 h-8 rounded-full object-cover"
                           />
                           <div>
                             <span className="base-medium text-light-3">
