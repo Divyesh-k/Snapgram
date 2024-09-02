@@ -21,6 +21,7 @@ const StoryBar = () => {
       setCurrentUserStory(true)
     }
   }, [])
+  
 
   const storiesUsers = useMemo(() => {
     if (isLoading || !users) return [];
@@ -39,6 +40,12 @@ const StoryBar = () => {
     const updatedUsers = [users[currentUserIndex], ...filteredUsers];
     return updatedUsers;
   }, [users, currentUser, isLoading]);
+
+  //in case currunt user is not getting
+  if(!currentUser) {
+    refetchCurrentUser();
+    return <Loader />
+  }
 
 
   const handleCloseModal = () => {

@@ -92,7 +92,7 @@ const getPostById = async (req, res) => {
 const getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find().populate("creator").populate({
-      path: "likes.",
+      path: "likes",
       select: "userId profilePicture", // Select only userId and profilePicture
     });
     // .sort({ createdAt: -1 });

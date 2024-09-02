@@ -18,6 +18,7 @@ import { Toaster } from "./components/ui/toaster";
 import { useState } from "react";
 import Uiloder from "./components/shared/Uiloder";
 import Chat from "./components/Chat/Chat";
+import NotFound from "./components/shared/NotFound";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -51,9 +52,11 @@ function App() {
               <Route path="/posts/:id" element={<PostDetails />} />
               <Route path="/profile/:id/*" element={<Profile />} />
               <Route path="/update-profile/:id" element={<UpdateProfile />} />
-              <Route path="/chat" element={<Chat/>} />
-              <Route path="/chat/:id" element={<Chat/>} />
+              <Route path="/chat" element={<Chat />} />
+              <Route path="/chat/:id" element={<Chat />} />
             </Route>
+
+            <Route path="*" element={<NotFound />} />
           </Routes>
 
           <Toaster />
