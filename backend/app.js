@@ -44,10 +44,10 @@ app.use("/", indexRouter);
 // Serve static files from the 'uploads' directory
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
-// app.use(express.static(path.join(path.resolve(), "/frontend/dist")));
-// app.get("*", (req, res) => {
-//   res.sendFile(path.resolve(path.resolve(), "frontend", "dist", "index.html"));
-// });
+app.use(express.static(path.join(path.resolve(), "/frontend/dist")));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(path.resolve(), "frontend", "dist", "index.html"));
+});
 
 // Error handling
 app.use((err, req, res, next) => {
