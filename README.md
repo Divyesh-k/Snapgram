@@ -1,6 +1,6 @@
 # Social Media React App
-![image](https://github.com/riteshk-007/Social-media-react-app/assets/135107962/8d4104b8-0881-4d6a-8a52-9dbb92a6c4f1)
 
+## Overview
 This is a social media web application built with React. It provides users with a platform to share posts, follow other users, and engage in discussions through comments and likes.
 
 ## Features
@@ -11,41 +11,8 @@ This is a social media web application built with React. It provides users with 
 - **Post Interactions:** Users can like, comment on, and share posts.
 - **Follow System:** Users can follow other users to see their posts in their feed.
 - **News Feed:** Users have a personalized news feed displaying posts from users they follow.
-- **Notifications:** Users receive notifications for new likes, comments, and followers.
 - **Search Functionality:** Users can search for other users or posts by keywords or usernames.
 - **Responsive Design:** The application is optimized for various screen sizes and devices.
-
-## Installation
-
-To run the application locally, follow these steps:
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/riteshk-007/Social-media-react-app.git
-```
-
-2. Navigate to the project directory:
-
-```bash
-cd Social-media-react-app
-```
-
-3. Install the dependencies:
-
-```bash
-npm install
-```
-
-4. Start the development server:
-
-```bash
-npm start
-```
-
-5. Open your browser and visit `http://localhost:3000` to access the application.
-![image](https://github.com/riteshk-007/Social-media-react-app/assets/135107962/6e4434a6-d9e8-412b-b102-6a964bfdf71e)
-![image](https://github.com/riteshk-007/Social-media-react-app/assets/135107962/cad21079-3308-4d9f-82ba-1dda07682b0a)
 
 
 ## Technologies Used
@@ -54,9 +21,6 @@ npm start
 - React Router
 - Firebase (Authentication, Firestore, Storage)
 - Material-UI
-
-## Project Structure
-![image](https://github.com/riteshk-007/Social-media-react-app/assets/135107962/09710c62-0c88-4f39-b730-29bb5919c2de)
 
 The project structure follows the standard React application structure:
 
