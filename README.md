@@ -1,4 +1,4 @@
-# Social Media React App
+# SnapGram
 
 ## Overview
 This is a social media web application built with React. It provides users with a platform to share posts, follow other users, and engage in discussions through comments and likes.
