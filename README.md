@@ -16,23 +16,13 @@ This is a social media web application built with React. It provides users with 
 
 
 ## Technologies Used
+- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="40" height="40"/>  
+- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/>  
+- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="react" width="40" height="40"/> 
+- <img src="https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg" alt="tailwind" width="40" height="40"/>
 
-- React
-- React Router
-- Firebase (Authentication, Firestore, Storage)
-- Material-UI
 
 The project structure follows the standard React application structure:
-
-- `public/`: Contains the static files and the HTML template.
-- `src/`: Contains the source code for the application.
-  - `components/`: Contains reusable UI components.
-  - `containers/`: Contains the main components that represent different pages of the application.
-  - `redux/`: Contains the Redux store setup, actions, and reducers.
-  - `firebase/`: Contains the Firebase configuration and utility functions for interacting with Firebase services.
-  - `utils/`: Contains utility functions used throughout the application.
-  - `App.js`: The main component that handles routing and rendering of different pages.
-  - `index.js`: The entry point of the application.
 
 ## Contributing
 
@@ -41,7 +31,6 @@ Contributions are welcome! If you find any issues or would like to add new featu
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-![image](https://github.com/riteshk-007/Social-media-react-app/assets/135107962/965aade9-8380-4e70-84e7-9588ad9aea8c)
 
 ## Acknowledgements
 
@@ -52,6 +41,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 If you have any questions or suggestions, feel free to reach out to the project owner:
 
-- Ritesh Kumar
-- GitHub: [@riteshk-007](https://github.com/riteshk-007)
-- Email: rk0001945@gmail.com, codeshorts007@gmail.com
+- Divyesh-Kakadiya
+- GitHub: [@Divyesh-K](https://github.com/Divyesh-K)
+- Email: ddkk7531@gmail.com
