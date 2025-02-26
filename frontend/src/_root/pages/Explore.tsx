@@ -1,7 +1,6 @@
 import GridPostList from "@/components/shared/GridPostList";
 import SearchResults from "@/components/shared/SearchResults";
 import Loader from "@/components/shared/loader";
-import { Input } from "@/components/ui/input";
 import { useGetRecentPosts } from "@/lib/react-query/queriesAndMutation";
 import { useState } from "react";
 
@@ -32,7 +31,7 @@ const FilterBox = () => {
 };
 
 const Explore = () => {
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue] = useState("");
   const { data: recentPosts, isLoading: isLoadingPosts } = useGetRecentPosts();
 
   const shouldShowSearchResults = searchValue !== "";
@@ -42,7 +41,7 @@ const Explore = () => {
     <div className="explore-container">
       <div className="explore-inner_container">
         <h2 className="h3-bold md:h2-bold w-full">Search Posts</h2>
-        <div className="flex gap-1 px-4 w-full rounded-lg bg-dark-4">
+        {/* <div className="flex gap-1 px-4 w-full rounded-lg bg-dark-4">
           <img src="/assets/icons/search.svg" width={24} height={24} alt="search" />
           <Input
             type="text"
@@ -54,7 +53,7 @@ const Explore = () => {
               setSearchValue(value);
             }}
           />
-        </div>
+        </div> */}
       </div>
       <div className="flex-between w-full max-w-7xl mt-16 mb-7">
         <h3 className="body-bold md:h3-bold">Popular Today</h3>
