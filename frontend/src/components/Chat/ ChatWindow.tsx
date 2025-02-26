@@ -139,7 +139,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ selectedChat }) => {
   }
 
   if (loadingSelectedUser || loadingMessages) return <Loader />;
-
+  console.log("------------> profile picture:" , selectedUser.profilePicture);
   return (
     <div
       className="w-5/6 flex flex-col relative m-auto top-16 rounded"
@@ -147,7 +147,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ selectedChat }) => {
     >
       <div className="bg-dark-3 p-4 flex items-center rounded">
         <div className="w-12 h-12 rounded-full bg-gray-500 mr-4 overflow-hidden">
-          <img src={selectedUser.profilePicture} alt="" className="object-cover w-12 h-12"/>
+          <img src={`${import.meta.env.VITE_API_URL}/uploads/${selectedUser.profilePicture}`} alt="" className="object-cover w-12 h-12"/>
         </div>
         <h2 className="text-white text-xl font-semibold">{selectedUser.username}</h2>
       </div>
