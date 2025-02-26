@@ -10,6 +10,7 @@ import {
   useDeleteFollow,
 } from "@/lib/react-query/queriesAndMutation";
 import { useCurrentUserContext } from "@/context/UserContext";
+// import { profile } from "console";
 
 // @ts-ignore
 const UserCard = ({ user }) => {

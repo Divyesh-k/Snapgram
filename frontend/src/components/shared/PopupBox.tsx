@@ -92,7 +92,7 @@ const PopupBox = ({
                 <img
                   src={
                     // @ts-ignore
-                    user.profilePicture ||
+                    `${import.meta.env.VITE_API_URL}/uploads/${user.profilePicture}` ||
                     "/assets/icons/profile-placeholder.svg"
                   }
                   alt={user.username}
